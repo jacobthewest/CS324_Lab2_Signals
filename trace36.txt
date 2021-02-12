@@ -1,0 +1,11 @@
+#
+# trace36.txt - Pipeline with two commands
+#
+/bin/echo -e tsh> ./myppid \0174 /bin/cat
+./myppid | /bin/cat
+
+/bin/echo -e tsh> ./myppid \0174 /bin/grep [0-9]
+./myppid | /bin/grep [0-9]
+
+/bin/echo -e tsh> ./myppid \0174 /bin/grep [a-z]
+./myppid | /bin/grep [a-z]

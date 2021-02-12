@@ -1,0 +1,12 @@
+#
+# trace40.txt - Pipeline with two commands, both in the same process group
+#
+/bin/echo -e tsh> /bin/date +%s
+/bin/date +%s
+
+/bin/echo -e tsh> ./myppid 10 \0174 ./myintgroup 1
+./myppid 5 | ./myintgroup 1
+
+/bin/echo -e tsh> /bin/date +%s
+/bin/date +%s
+

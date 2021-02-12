@@ -1,0 +1,5 @@
+#
+# trace35.txt - Redirect standard input
+#
+/bin/echo -e tsh> /bin/cat \0074 TEMPFILE1
+/bin/cat < TEMPFILE1

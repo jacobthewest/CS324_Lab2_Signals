@@ -1,0 +1,14 @@
+#
+# trace38.txt - Pipeline with more than two commands
+#
+/bin/echo -e tsh> ./myppid \0174 /bin/cat \0174 /bin/grep [0-9]
+./myppid | /bin/cat | /bin/grep [0-9]
+
+/bin/echo -e tsh> ./myppid \0174 /bin/cat \0174 /bin/grep [a-z]
+./myppid | /bin/cat | /bin/grep [a-z]
+
+/bin/echo -e tsh> ./myppid \0174 /bin/cat \0174 /bin/cat \0174 /bin/grep [0-9]
+./myppid | /bin/cat | /bin/cat | /bin/grep [0-9]
+
+/bin/echo -e tsh> ./myppid \0174 /bin/cat \0174 /bin/cat \0174 /bin/grep [a-z]
+./myppid | /bin/cat | /bin/cat | /bin/grep [a-z]

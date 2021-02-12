@@ -1,0 +1,18 @@
+#
+# trace39.txt - Pipeline with more than two commands, synchronization
+#
+/bin/echo -e tsh> ./myppid 2 \0174 /bin/cat \0174 /bin/cat \0174 /bin/cat
+./myppid 2 | /bin/cat | /bin/cat | /bin/cat
+
+SLEEP 1
+
+/bin/echo tsh> /bin/ps T
+/bin/ps T
+
+/bin/echo -e tsh> /bin/echo foo \0174 /bin/cat \0174 /bin/cat \0174 ./myppid 2
+/bin/echo foo | /bin/cat | /bin/cat | ./myppid 2
+
+SLEEP 1
+
+/bin/echo tsh> /bin/ps T
+/bin/ps T

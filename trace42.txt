@@ -1,0 +1,12 @@
+#
+# trace42.txt - Both stdin/stdout redirection
+#
+# create (and then delete) two temp files
+/bin/echo -e tsh> /bin/rm TEMPFILE1
+/bin/rm TEMPFILE1
+
+/bin/echo -e tsh> /bin/cat \0074 TEMPFILE2 \0076 TEMPFILE1
+/bin/cat < TEMPFILE2 > TEMPFILE1
+
+/bin/echo -e tsh> /bin/cat TEMPFILE1
+/bin/cat TEMPFILE1

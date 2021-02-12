@@ -1,0 +1,20 @@
+#
+# trace41.txt - Pipeline with stdin/stdout redirection
+#
+/bin/echo -e tsh> ./myppid \0174 /bin/grep [0-9] \0076 TEMPFILE1
+./myppid | /bin/grep [0-9] > TEMPFILE1
+
+/bin/echo -e tsh> ./myppid \0174 /bin/grep [a-z] \0076 TEMPFILE2
+./myppid | /bin/grep [a-z] > TEMPFILE2
+
+/bin/echo -e tsh> /bin/cat TEMPFILE1
+/bin/cat TEMPFILE1
+
+/bin/echo -e tsh> /bin/cat TEMPFILE2
+/bin/cat TEMPFILE2
+
+/bin/echo -e tsh> /bin/cat \0074 TEMPFILE1 \0174 /bin/grep [0-9]
+/bin/cat < TEMPFILE1 | /bin/grep [0-9]
+
+/bin/echo -e tsh> /bin/cat \0074 TEMPFILE1 \0174 /bin/grep [a-z]
+/bin/cat < TEMPFILE1 | /bin/grep [a-z]

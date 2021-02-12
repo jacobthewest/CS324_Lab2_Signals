@@ -1,0 +1,28 @@
+#
+# trace34.txt - Redirect standard output
+#
+
+# create (and then delete) two temp files
+/bin/echo -e tsh> /bin/rm TEMPFILE1 TEMPFILE2
+/bin/rm TEMPFILE1 TEMPFILE2
+
+# create new file, and redirect stdout to it
+/bin/echo -e tsh> ./myppid \0076 TEMPFILE1
+./myppid > TEMPFILE1
+
+# create new file, and redirect stdout (but not stderr) to it
+/bin/echo -e tsh> ./myppid -e \0076 TEMPFILE2
+./myppid -e > TEMPFILE2
+
+# overwrite an existing file by redirecting stout to it
+/bin/echo -e tsh> ./myppid \0076 TEMPFILE3
+./myppid > TEMPFILE3
+
+/bin/echo -e tsh> /bin/cat TEMPFILE1
+/bin/cat TEMPFILE1
+
+/bin/echo -e tsh> /bin/cat TEMPFILE2
+/bin/cat TEMPFILE2
+
+/bin/echo -e tsh> /bin/cat TEMPFILE3
+/bin/cat TEMPFILE3

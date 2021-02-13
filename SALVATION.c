@@ -125,9 +125,9 @@ int main(int argc, char **argv)
         case 'p':             /* don't print a prompt */
             emit_prompt = 0;  /* handy for automatic testing */
 	    break;
-	default:
-            usage();
-	}
+        default:
+                usage();
+        }
     }
 
     /* Install the signal handlers */

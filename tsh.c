@@ -359,20 +359,61 @@ void sigquit_handler(int sig) {
 
 /* 
  * do_bgfg - Execute the builtin bg and fg commands
+ * 50 lines
  */
-// *****************************************************
-// *********************TODO: 50 lines*************************
-// *****************************************************
 void do_bgfg(char **argv) {
     
+    // If the user doesn't specify a PID or JID
+    if(argv[1] == NULL) {
+        printf("%s command requires PID or %%jobid argument\n", argv[0]);
+        return;
+    }
+
+    // If the second argument isn't a number
+    if(argv[1][0] != '%' && !isdigit(argv[1][0])) {
+        printf("%s: argument must be a PID or %%jobid\n", argv[0]);
+        return;
+    }
+
+    // Check if it is a job or a process
+    int isPid = 0;
+    if(argv[1][0] != '%') { // The number doesn't have a %
+        isPid = 1;
+    }
+
+    struct job_t *theJob;
+
+    if(!isPid) { // See if the jid exists
+        theJob = getjobjid(jobs, (pid_t) atoi(&argv[1][1]));
+        if(theJob == NULL) {
+            //printf("(%d): No such job\n", (pid_t) atoi(&argv[1][1]));
+            printf("%s: No such job\n", argv[1]);
+            return;
+        }        
+    } else { // See if the pid exists
+        theJob = getjobpid(jobs, (pid_t) atoi(argv[1]));
+        if(theJob == NULL) {
+            printf("(%d): No such process\n", (pid_t) atoi(argv[1]));
+            return;
+        }
+    }
+    
+    if(strcmp(argv[0], "bg") == 0) { // They requested bg
+        theJob->state = BG; // Assign it to the background state
+        printf("[%d] (%d) %s", theJob->jid, theJob->pid, theJob->cmdline);
+        protectedKill(-theJob->pid, SIGCONT); // Give a SIGCONT signal to theJob's process group
+    } else { // They requested fg
+        theJob->state = FG; // Assign it to the foreground state
+        protectedKill(-theJob->pid, SIGCONT); // Give a SIGCONT signal to theJob's process group
+        waitfg(theJob->pid); // Wait because the slides told me to ;)
+    }
+    return;
 }
 
 /* 
  * waitfg - Block until process pid is no longer the foreground process
+ * 20 lines
  */
-// *****************************************************
-// *********************TODO: 20 lines*************************
-// *****************************************************
 void waitfg(pid_t pid) {
     // – In waitfg, use a busy loop around the sleep function.
     
@@ -397,11 +438,8 @@ void waitfg(pid_t pid) {
  *     received a SIGSTOP or SIGTSTP signal. The handler reaps all
  *     available zombie children, but doesn't wait for any other
  *     currently running children to terminate.  
- * SIGCHLD sent to kernel when child process terminates.
+ * 80 lines
  */
-// *****************************************************
-// *********************TODO: 80 lines*************************
-// *****************************************************
 void sigchld_handler(int sig) {
 
     // Reap the child process using waitpid
@@ -467,10 +505,8 @@ void sigchld_handler(int sig) {
  * sigint_handler - The kernel sends a SIGINT to the shell whenver the
  *    user types ctrl-c at the keyboard.  Catch it and send it along
  *    to the foreground job.  
+ * 15 lines
  */
-// *****************************************************
-// *********************TODO: 15 lines*************************
-// *****************************************************
 void sigint_handler(int sig) {
     // get the foreground job
     pid_t foregroundPid = fgpid(jobs);
@@ -492,11 +528,8 @@ void sigint_handler(int sig) {
  * sigtstp_handler - The kernel sends a SIGTSTP to the shell whenever
  *     the user types ctrl-z at the keyboard. Catch it and suspend the
  *     foreground job by sending it a SIGTSTP.  
- * 
+ * 15 lines
  */
-// *****************************************************
-// *********************TODO: 15 lines*************************
-// *****************************************************
 void sigtstp_handler(int sig) {
 
     // get the foreground job
@@ -526,9 +559,6 @@ void sigtstp_handler(int sig) {
  * background children don't receive SIGINT (SIGTSTP) from the kernel
  * when we type ctrl-c (ctrl-z) at the keyboard.  
 */
-// *****************************************************
-// *********************TODO: 70 lines*************************
-// *****************************************************
 void eval(char *cmdline) 
 {
     //################### Variables ######################//
@@ -608,10 +638,8 @@ void eval(char *cmdline)
 /* 
  * builtin_cmd - If the user has typed a built-in command then execute
  *    it immediately.  
+ * 50 lines
  */
-// *****************************************************
-// *********************TODO: 50 lines*************************
-// *****************************************************
 int builtin_cmd(char **argv) 
 {
     if(!strcmp(argv[0], "quit")) { // If firstCommand == "quit"
